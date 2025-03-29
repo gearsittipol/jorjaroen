@@ -1,40 +1,293 @@
-<iframe id="hiddenSubmit" name="hiddenSubmit" style="display:none;"></iframe>
-...
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ลงทะเบียนร่วมงาน Grand Opening</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(to bottom, #ff66b2, #ff99cc);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header-image {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .headline {
+      margin-top: 1rem;
+      text-align: center;
+      line-height: 1.6;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    form {
+      background: white;
+      color: #333;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      margin-top: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 1rem;
+      width: 100%;
+      font-size: 1.1rem;
+      background-color: #ff3399;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e60073;
+    }
+
+    footer {
+      margin: 2rem 0;
+      font-size: 0.9rem;
+      color: #fff;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ✅ เลือกภาษา -->
+  <div style="margin-top: 1rem; text-align: right;">
+    <label for="language">🌐 Language:</label>
+    <select id="language" onchange="switchLanguage()" style="padding: 0.4rem; border-radius: 6px;">
+      <option value="th">ไทย</option>
+      <option value="en">English</option>
+      <option value="my">မြန်မာ</option>
+    </select>
+  </div>
+
+  <!-- ✅ รูปภาพ -->
+  <img src="https://img5.pic.in.th/file/secure-sv1/--.-A4-.png" alt="Grand Opening" class="header-image" />
+
+  <!-- ✅ หัวข้อ -->
+  <div class="headline">
+    ลงทะเบียนร่วมงาน <br>
+    Grand Opening <br>
+    จ.เจริญค้าวัสดุก่อสร้าง
+  </div>
+
+  <!-- ✅ ฟอร์ม -->
+  <form id="registerForm" target="hidden_iframe" action="https://docs.google.com/forms/d/e/1FAIpQLSeTMtM-B7XHX6pziUAQyrHVs5PY_LuvadrnhJwWNYT661VGEg/formResponse" method="POST" onsubmit="submitted=true;">
+    <label for="role">คุณมาในฐานะ...?</label>
+    <select name="entry.715279163" id="role" required onchange="toggleOther('role')">
+      <!-- will be filled by JS -->
+    </select>
+    <input type="text" id="roleOther" class="hidden" placeholder="โปรดระบุฐานะของคุณ" />
+
+    <label for="prefix">คำนำหน้าชื่อ</label>
+    <select name="entry.1608787866" id="prefix" required onchange="toggleOther('prefix')">
+      <!-- will be filled by JS -->
+    </select>
+    <input type="text" id="prefixOther" class="hidden" placeholder="โปรดระบุคำนำหน้าชื่อของคุณ" />
+
+    <label for="fullname">ชื่อ-นามสกุล</label>
+    <input type="text" name="entry.161154004" id="fullname" required />
+
+    <label for="phone">เบอร์โทรศัพท์</label>
+    <input type="tel" name="entry.1359520012" id="phone" required />
+
+    <button type="submit">ส่งแบบฟอร์ม</button>
+  </form>
+
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+</div>
+
+<footer>© 2025 บริษัท เจริญค้าวัสดุก่อสร้าง จำกัด</footer>
+
 <script>
+  let submitted = false;
+  let currentLang = "th";
+
+  document.getElementById('hidden_iframe').onload = function () {
+    if (submitted) {
+      alert(currentLang === 'th' ? "ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่ลงทะเบียน!" :
+            currentLang === 'en' ? "Form submitted successfully. Thank you!" :
+            "ပေးပို့ပြီးပါပြီ။ ကျေးဇူးတင်ပါတယ်။");
+      document.getElementById("registerForm").reset();
+      submitted = false;
+      switchLanguage(); // reset language content
+    }
+  };
+
   function toggleOther(field) {
     const select = document.getElementById(field);
     const otherInput = document.getElementById(field + 'Other');
-    if (select.value === 'อื่นๆ') {
-      otherInput.classList.remove('hidden');
+    if (select.value.includes("อื่นๆ") || select.value.includes("Other") || select.value.includes("အခြား")) {
+      otherInput.classList.remove("hidden");
       otherInput.required = true;
+      select.name = "";
+      otherInput.name = field === 'role' ? "entry.715279163" : "entry.1608787866";
     } else {
-      otherInput.classList.add('hidden');
+      otherInput.classList.add("hidden");
       otherInput.required = false;
+      otherInput.name = "";
+      select.name = field === 'role' ? "entry.715279163" : "entry.1608787866";
     }
   }
 
-  document.getElementById("registerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  function updateSelectOptions(id, options) {
+    const select = document.getElementById(id);
+    select.innerHTML = "";
+    options.forEach(opt => {
+      const o = document.createElement("option");
+      o.value = opt;
+      o.text = opt;
+      select.appendChild(o);
+    });
+  }
 
-    const roleValue = document.getElementById("role").value === "อื่นๆ"
-      ? document.getElementById("roleOther").value
-      : document.getElementById("role").value;
+  function switchLanguage() {
+    const lang = document.getElementById("language").value;
+    currentLang = lang;
 
-    const prefixValue = document.getElementById("prefix").value === "อื่นๆ"
-      ? document.getElementById("prefixOther").value
-      : document.getElementById("prefix").value;
+    const text = {
+      th: {
+        headline: "ลงทะเบียนร่วมงาน <br>Grand Opening <br>จ.เจริญค้าวัสดุก่อสร้าง",
+        role: "คุณมาในฐานะ...?",
+        prefix: "คำนำหน้าชื่อ",
+        fullname: "ชื่อ-นามสกุล",
+        phone: "เบอร์โทรศัพท์",
+        submit: "ส่งแบบฟอร์ม",
+        roles: [
+          "-- กรุณาเลือก --",
+          "ช่าง (ช่างก่อสร้าง, ช่างไฟ, ช่างประปา ฯลฯ)",
+          "ผู้รับเหมา / ทีมช่าง",
+          "เจ้าของร้านวัสดุก่อสร้าง / ร้านค้าอื่นๆ",
+          "ลูกค้าทั่วไป (เจ้าของบ้าน, ลูกค้ามาซื้อใช้เอง)",
+          "สถาปนิก / นักออกแบบ",
+          "วิศวกร",
+          "อื่นๆ (โปรดระบุ)"
+        ],
+        prefixes: [
+          "-- กรุณาเลือก --",
+          "นาย",
+          "นาง",
+          "นางสาว",
+          "เด็กชาย",
+          "เด็กหญิง",
+          "อื่นๆ (โปรดระบุ)"
+        ]
+      },
+      en: {
+        headline: "Register for <br>Grand Opening <br>Charoen Construction Materials",
+        role: "You are attending as...",
+        prefix: "Prefix",
+        fullname: "Full Name",
+        phone: "Phone Number",
+        submit: "Submit",
+        roles: [
+          "-- Please select --",
+          "Technician (Builder, Electrician, Plumber, etc.)",
+          "Contractor / Construction Team",
+          "Hardware Store Owner / Other Shop",
+          "General Customer (Homeowner, DIY Buyer)",
+          "Architect / Designer",
+          "Engineer",
+          "Other (Please specify)"
+        ],
+        prefixes: [
+          "-- Please select --",
+          "Mr.",
+          "Mrs.",
+          "Miss",
+          "Master",
+          "Miss (Child)",
+          "Other (Please specify)"
+        ]
+      },
+      my: {
+        headline: "Grand Opening <br>မှတ်ပုံတင်ပါ <br>Charoen ဆောက်လုပ်ရေးပစ္စည်း",
+        role: "သင်သည်...အဖြစ်လာပါသည်။",
+        prefix: "နာမည်ရှေ့ဆက်",
+        fullname: "နာမည်အပြည့်အစုံ",
+        phone: "ဖုန်းနံပါတ်",
+        submit: "တင်သွင်းပါ",
+        roles: [
+          "-- ကျေးဇူးပြု၍ ရွေးပါ --",
+          "အလုပ်သမား (ဆောက်လုပ်ရေး, လျှပ်စစ်, ရေသွယ်သွင်း)",
+          "စာချုပ်ချုပ်သူ / အဖွဲ့",
+          "ဆောက်လုပ်ရေးပစ္စည်းဆိုင် / အခြားဆိုင်",
+          "ပုံမှန်ဖောက်သည် (အိမ်ရှင်)",
+          "ဒီဇိုင်နာ / နောက်ခံရေးဆရာ",
+          "အင်ဂျင်နီယာ",
+          "အခြား (ကျေးဇူးပြု၍ ဖော်ပြပါ)"
+        ],
+        prefixes: [
+          "-- ကျေးဇူးပြု၍ ရွေးပါ --",
+          "မစ္စတာ",
+          "မစ္စစ်",
+          "မစ္စ",
+          "ကောင်လေး",
+          "မလေး",
+          "အခြား (ဖော်ပြပါ)"
+        ]
+      }
+    };
 
-    const fullname = encodeURIComponent(document.getElementById("fullname").value);
-    const phone = encodeURIComponent(document.getElementById("phone").value);
+    const content = text[lang];
+    document.querySelector(".headline").innerHTML = content.headline;
+    document.querySelector("label[for='role']").innerText = content.role;
+    document.querySelector("label[for='prefix']").innerText = content.prefix;
+    document.querySelector("label[for='fullname']").innerText = content.fullname;
+    document.querySelector("label[for='phone']").innerText = content.phone;
+    document.querySelector("#registerForm button").innerText = content.submit;
 
-    const role = encodeURIComponent(roleValue);
-    const prefix = encodeURIComponent(prefixValue);
+    updateSelectOptions("role", content.roles);
+    updateSelectOptions("prefix", content.prefixes);
+  }
 
-    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeTMtM-B7XHX6pziUAQyrHVs5PY_LuvadrnhJwWNYT661VGEg/formResponse?entry.715279163=${role}&entry.1608787866=${prefix}&entry.161154004=${fullname}&entry.1359520012=${phone}`;
-
-    document.getElementById("hiddenSubmit").src = url;
-
-    alert("ส่งข้อมูลเรียบร้อยแล้ว ขอบคุณที่ลงทะเบียน!");
-    document.getElementById("registerForm").reset();
-  });
+  // เรียกครั้งแรก
+  switchLanguage();
 </script>
+
+</body>
+</html>
