@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ลงทะเบียนร่วมงาน Grand Opening</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(to bottom, #ff66b2, #ff99cc);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header-image {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .headline {
+      margin-top: 1rem;
+      text-align: center;
+      line-height: 1.6;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    form {
+      background: white;
+      color: #333;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      margin-top: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 1rem;
+      width: 100%;
+      font-size: 1.1rem;
+      background-color: #ff3399;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e60073;
+    }
+
+    footer {
+      margin: 2rem 0;
+      font-size: 0.9rem;
+      color: #fff;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ คอนเทนเนอร์ที่ควบคุมขนาด -->
+  <div class="container">
+    <!-- ✅ รูปภาพที่ปรับขนาดตาม container -->
+    <img src="https://img5.pic.in.th/file/secure-sv1/--.-A4-.png" alt="Grand Opening" class="header-image" />
+
+    <!-- ✅ หัวข้อใต้รูป -->
+    <div class="headline">
+      ลงทะเบียนร่วมงาน <br>
+      Grand Opening <br>
+      จ.เจริญค้าวัสดุก่อสร้าง
+    </div>
+
+    <!-- ✅ ฟอร์มลงทะเบียน -->
+    <form id="registerForm">
+      <label for="role">คุณมาในฐานะ...?</label>
+      <select id="role" required onchange="toggleOther('role')">
+        <option value="">-- กรุณาเลือก --</option>
+        <option value="ช่าง (ช่างก่อสร้าง, ช่างไฟ, ช่างประปา ฯลฯ)">ช่าง</option>
+        <option value="ผู้รับเหมา / ทีมช่าง">ผู้รับเหมา / ทีมช่าง</option>
+        <option value="เจ้าของร้านวัสดุก่อสร้าง / ร้านค้าอื่นๆ">เจ้าของร้านวัสดุ</option>
+        <option value="ลูกค้าทั่วไป (เจ้าของบ้าน, ลูกค้ามาซื้อใช้เอง)">ลูกค้าทั่วไป</option>
+        <option value="สถาปนิก / นักออกแบบ">สถาปนิก / นักออกแบบ</option>
+        <option value="วิศวกร">วิศวกร</option>
+        <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+      </select>
+      <input type="text" id="roleOther" class="hidden" placeholder="โปรดระบุฐานะของคุณ" />
+
+      <label for="prefix">คำนำหน้าชื่อ</label>
+      <select id="prefix" required onchange="toggleOther('prefix')">
+        <option value="">-- กรุณาเลือก --</option>
+        <option value="นาย (Mr.)">นาย</option>
+        <option value="นาง (Mrs.)">นาง</option>
+        <option value="นางสาว (Miss.)">นางสาว</option>
+        <option value="เด็กชาย">เด็กชาย</option>
+        <option value="เด็กหญิง">เด็กหญิง</option>
+        <option value="อื่นๆ">อื่นๆ (โปรดระบุ)</option>
+      </select>
+      <input type="text" id="prefixOther" class="hidden" placeholder="โปรดระบุคำนำหน้าชื่อของคุณ" />
+
+      <label for="fullname">ชื่อ-นามสกุล</label>
+      <input type="text" id="fullname" required />
+
+      <label for="phone">เบอร์โทรศัพท์</label>
+      <input type="tel" id="phone" required />
+
+      <button type="submit">ส่งแบบฟอร์ม</button>
+    </form>
+  </div>
+
+  <!-- ✅ ฟุตเตอร์ -->
+  <footer>© 2025 บริษัท เจริญค้าวัสดุก่อสร้าง จำกัด</footer>
+
+  <script>
+    function toggleOther(field) {
+      const select = document.getElementById(field);
+      const otherInput = document.getElementById(field + 'Other');
+      if (select.value === 'อื่นๆ') {
+        otherInput.classList.remove('hidden');
+        otherInput.required = true;
+      } else {
+        otherInput.classList.add('hidden');
+        otherInput.required = false;
+      }
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const roleValue = document.getElementById("role").value === "อื่นๆ"
+        ? document.getElementById("roleOther").value
+        : document.getElementById("role").value;
+
+      const prefixValue = document.getElementById("prefix").value === "อื่นๆ"
+        ? document.getElementById("prefixOther").value
+        : document.getElementById("prefix").value;
+
+      const fullname = encodeURIComponent(document.getElementById("fullname").value);
+      const phone = encodeURIComponent(document.getElementById("phone").value);
+
+      const role = encodeURIComponent(roleValue);
+      const prefix = encodeURIComponent(prefixValue);
+
+      const url = `https://docs.google.com/forms/d/e/1FAIpQLSeTMtM-B7XHX6pziUAQyrHVs5PY_LuvadrnhJwWNYT661VGEg/formResponse?entry.715279163=${role}&entry.1608787866=${prefix}&entry.161154004=${fullname}&entry.1359520012=${phone}`;
+
+      window.open(url, "_blank");
+    });
+  </script>
+</body>
+</html>
